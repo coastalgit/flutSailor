@@ -4,7 +4,6 @@ import 'package:flutter_sailor/page_2.dart';
 import 'package:flutter_sailor/routes.dart';
 
 class PageHome extends StatefulWidget {
-
   static const String id = '/home';
 
   @override
@@ -23,15 +22,17 @@ class _PageHomeState extends State<PageHome> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             FlatButton(
+              color: Colors.blueGrey.shade200,
               child: Text('Show page 1'),
-              onPressed: () => showPage1(),
+              onPressed: () => _showPage1(),
             ),
             SizedBox(
               height: 20,
             ),
             FlatButton(
+              color: Colors.blueGrey.shade200,
               child: Text('Show page 2'),
-              onPressed: () => showPage2(),
+              onPressed: () => _showPage2(),
             ),
           ],
         ),
@@ -39,12 +40,25 @@ class _PageHomeState extends State<PageHome> {
     );
   }
 
-  showPage1() {
-    Routes.sailor.navigate(Page1.id);
+  void _showPage1() {
+    Routes.sailor.navigate(Page1.id,
+        args: Page1Args(
+          myArg1: _buildStringVal(),
+          myArg2: 12.3,
+        ));
   }
 
-  showPage2() {
-    // Sailor is callable class, hence we can omit 'navigate' and directly call method
-    Routes.sailor(Page2.id);
+  void _showPage2() {
+    //Note: Sailor is callable class, hence we can omit 'navigate' and directly call method IF it is not using params/args
+    //i.e. Routes.sailor.(MyPage.id);
+
+    Routes.sailor.navigate(Page2.id, params: {
+      'myVal1': _buildStringVal(),
+      'myVal2': 47,
+    });
+  }
+
+  String _buildStringVal() {
+    return "Ola at " + DateTime.now().toString();
   }
 }

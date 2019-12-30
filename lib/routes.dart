@@ -11,6 +11,12 @@ class Routes{
     sailor.addRoutes([
       SailorRoute(
         name: PageHome.id,
+
+        /*
+          NOTES ON ARGS AND PARAMS:
+          PARAMS = represented by a MAP, containing multiple vals. Note that we lose out on type safety.
+          ARGS = represented by a class
+        */
         builder: (context, args, params){
           return PageHome();
         },
@@ -18,14 +24,26 @@ class Routes{
       SailorRoute(
         name: Page1.id,
         builder: (context, args, params){
-          return Page1();
+          return Page1(myArgs: args,);
         },
+        // USING "ARGS" EXAMPLE IN THIS CASE
+
       ),
       SailorRoute(
         name: Page2.id,
         builder: (context, args, params){
-          return Page2();
+          return Page2(
+            // Passing the SailorParams by name, with optional casting via the generic method "param"
+            myVal1: params.param<String>('myVal1'),
+            myVal2: params.param<int>('myVal2'),
+          );
         },
+        // USING "PARAMS" EXAMPLE IN THIS CASE
+        // Note on type safety: we must ensure we specify appropriate values for the represented expected type in our class
+        params: [
+          SailorParam(name: 'myVal1', isRequired: true, defaultValue: 'I am the default val'),
+          SailorParam(name: 'myVal2', defaultValue: 0),
+        ],
       ),
     ]);
   }
