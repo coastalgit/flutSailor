@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sailor/page_1.dart';
 import 'package:flutter_sailor/page_2.dart';
 import 'package:flutter_sailor/routes.dart';
+import 'package:sailor/sailor.dart';
 
 class PageHome extends StatefulWidget {
   static const String id = '/home';
@@ -52,10 +53,16 @@ class _PageHomeState extends State<PageHome> {
     //Note: Sailor is callable class, hence we can omit 'navigate' and directly call method IF it is not using params/args
     //i.e. Routes.sailor.(MyPage.id);
 
-    Routes.sailor.navigate(Page2.id, params: {
-      'myVal1': _buildStringVal(),
-      'myVal2': 47,
-    });
+    Routes.sailor.navigate(
+      Page2.id,
+      params: {
+        'myVal1': _buildStringVal(),
+        'myVal2': 47,
+      },
+      transitions: [SailorTransition.zoom_in],
+      transitionCurve: Curves.easeInOut,
+      transitionDuration: Duration(milliseconds: 1000),
+    );
   }
 
   String _buildStringVal() {

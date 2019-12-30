@@ -1,3 +1,4 @@
+import 'package:flutter/animation.dart';
 import 'package:flutter_sailor/page_1.dart';
 import 'package:flutter_sailor/page_2.dart';
 import 'package:flutter_sailor/page_home.dart';
@@ -24,10 +25,15 @@ class Routes{
       SailorRoute(
         name: Page1.id,
         builder: (context, args, params){
+          // USING "ARGS" EXAMPLE IN THIS CASE
           return Page1(myArgs: args,);
         },
-        // USING "ARGS" EXAMPLE IN THIS CASE
-
+        defaultTransitions: [
+          SailorTransition.slide_from_bottom,
+          //SailorTransition.zoom_in
+        ],
+        defaultTransitionCurve: Curves.bounceIn,
+        defaultTransitionDuration: Duration(milliseconds: 1500),
       ),
       SailorRoute(
         name: Page2.id,
