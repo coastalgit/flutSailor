@@ -1,6 +1,7 @@
 import 'package:flutter/animation.dart';
 import 'package:flutter_sailor/page_1.dart';
 import 'package:flutter_sailor/page_2.dart';
+import 'package:flutter_sailor/page_3.dart';
 import 'package:flutter_sailor/page_home.dart';
 import 'package:sailor/sailor.dart';
 
@@ -50,6 +51,13 @@ class Routes{
           SailorParam(name: 'myVal1', isRequired: true, defaultValue: 'I am the default val'),
           SailorParam(name: 'myVal2', defaultValue: 0),
         ],
+      ),
+      SailorRoute(
+        // TEST PAGE FOR STATES REBUILDER PACKAGE
+        name: Page3.id,
+        builder: (context, args, params){
+          return Page3();
+        },
       ),
     ]);
   }

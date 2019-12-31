@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sailor/page_1.dart';
 import 'package:flutter_sailor/page_2.dart';
+import 'package:flutter_sailor/page_3.dart';
 import 'package:flutter_sailor/routes.dart';
 import 'package:sailor/sailor.dart';
 
@@ -35,6 +36,14 @@ class _PageHomeState extends State<PageHome> {
               child: Text('Show page 2'),
               onPressed: () => _showPage2(),
             ),
+            SizedBox(
+              height: 20,
+            ),
+            FlatButton(
+              color: Colors.lightGreen.shade200,
+              child: Text('States Rebuilder Test'),
+              onPressed: () => _showPage3(),
+            ),
           ],
         ),
       ),
@@ -50,9 +59,6 @@ class _PageHomeState extends State<PageHome> {
   }
 
   void _showPage2() {
-    //Note: Sailor is callable class, hence we can omit 'navigate' and directly call method IF it is not using params/args
-    //i.e. Routes.sailor.(MyPage.id);
-
     Routes.sailor.navigate(
       Page2.id,
       params: {
@@ -68,4 +74,10 @@ class _PageHomeState extends State<PageHome> {
   String _buildStringVal() {
     return "Ola at " + DateTime.now().toString();
   }
+
+  void _showPage3() {
+    //Note: Sailor is callable class, hence we can omit 'navigate' and directly call method IF it is not using params/args
+    Routes.sailor(Page3.id);
+  }
+
 }
