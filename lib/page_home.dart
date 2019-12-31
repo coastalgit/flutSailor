@@ -3,7 +3,9 @@ import 'package:flutter_sailor/page_1.dart';
 import 'package:flutter_sailor/page_2.dart';
 import 'package:flutter_sailor/page_3.dart';
 import 'package:flutter_sailor/routes.dart';
+import 'package:flutter_sailor/translation_store.dart';
 import 'package:sailor/sailor.dart';
+import 'package:states_rebuilder/states_rebuilder.dart';
 
 class PageHome extends StatefulWidget {
   static const String id = '/home';
@@ -44,6 +46,10 @@ class _PageHomeState extends State<PageHome> {
               child: Text('States Rebuilder Test'),
               onPressed: () => _showPage3(),
             ),
+            SizedBox(
+              height: 20,
+            ),
+            buildLastTranslationField(),
           ],
         ),
       ),
@@ -78,6 +84,22 @@ class _PageHomeState extends State<PageHome> {
   void _showPage3() {
     //Note: Sailor is callable class, hence we can omit 'navigate' and directly call method IF it is not using params/args
     Routes.sailor(Page3.id);
+  }
+
+  Widget buildLastTranslationField() {
+
+    return Container(
+      child: StateBuilder<TranslationStore>(
+        models: [Injector.getAsReactive<TranslationStore>()],
+        builder: (context, reactiveModel) {
+          if (reactiveModel.hasData) {
+            return Text(reactiveModel.state.translationModel == null?'None':reactiveModel.state.translationModel.word_foreign);
+          } else {
+            return Text('None');
+          }
+        },
+      ),
+    );
   }
 
 }

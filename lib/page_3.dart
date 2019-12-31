@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sailor/model/translation_model.dart';
+import 'package:flutter_sailor/translation_store.dart';
 import 'package:sailor/sailor.dart';
+import 'package:states_rebuilder/states_rebuilder.dart';
 
 class Page3 extends StatefulWidget {
-
   static const String id = '/page3';
 
   @override
@@ -17,8 +18,19 @@ class _Page3State extends State<Page3> {
       appBar: AppBar(
         title: Text('Page 3 (States Rebuilder)'),
       ),
-      body: Center(
-        child: buildInitialInput(),
+      body: Container(
+        child: StateBuilder<TranslationStore>(
+          models: [Injector.getAsReactive<TranslationStore>()],
+          builder: (context, reactiveModel) {
+            if (reactiveModel.isWaiting) {
+              return buildLoading();
+            } else if (reactiveModel.hasData) {
+              return buildColumnWithData(reactiveModel.state.translationModel);
+            } else {
+              return buildInitialInput();
+            }
+          },
+        ),
       ),
     );
   }
@@ -28,17 +40,32 @@ class _Page3State extends State<Page3> {
       child: WordInputField(),
     );
   }
+
+  Widget buildLoading() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
   Column buildColumnWithData(TranslationModel translation) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text(
-          translation.word_en
+        Padding(
+          padding: const EdgeInsets.only(bottom: 18.0),
+          child: WordInputField(),
         ),
         Text(
-          translation.word_foreign,
+          translation!=null?translation.word_en:'',
+          style: TextStyle(color: Colors.blue, fontSize: 22.0),
         ),
-        WordInputField(),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          translation!=null?translation.word_foreign:'n/a',
+          style: TextStyle(color: Colors.red, fontSize: 22.0),
+        ),
       ],
     );
   }
@@ -46,7 +73,6 @@ class _Page3State extends State<Page3> {
   popBack() {
     Navigator.pop(context);
   }
-
 }
 
 class WordInputField extends StatelessWidget {
@@ -67,7 +93,12 @@ class WordInputField extends StatelessWidget {
   }
 
   void submitEnglishWord(BuildContext context, String englishWord) {
-    //TODO
-
+    print('Submit [' + englishWord + ']');
+    final reactiveModel = Injector.getAsReactive<TranslationStore>();
+    reactiveModel.setState(
+      (store) => store.getTranslation(englishWord),
+    );
+    // IMPORTANT: we cannot call methods on the "dumb" store directly. When we say "dumb", we mean a class with no explicit outside dependencies to assist with state management.
+    // The ReactiveModel widget returned by getAsReactive will make the state management possible.
   }
 }

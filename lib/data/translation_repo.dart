@@ -18,12 +18,15 @@ class FakeRepoPortuguese implements TranslationRepo {
 
   @override
   Future<TranslationModel> fetchTranslation(String englishWord) {
+    List<TranslationModel> matches =
+        translations.where((word) => word.word_en.toLowerCase() == (englishWord.toLowerCase())).toList();
 
-    List<TranslationModel> matches = translations.where((word) => word.word_en.toLowerCase() == (englishWord.toLowerCase())).toList();
+    //if (matches.length != 1) return null;
+    //return Future<TranslationModel>.value(matches.first);
 
-    if (matches.length != 1)
-      return null;
-
-    return Future<TranslationModel>.value(matches.first);
+    return Future.delayed(Duration(milliseconds: 1500), () {
+      if (matches.length != 1) return null;
+      return matches.first;
+    });
   }
 }
